@@ -23,7 +23,7 @@ import (
 	"runtime"
 	"time"
 
-	"frogtoss.com/binfetch/internal/pkg/objstore"
+	"github.com/mlabbe/binfetch/internal/pkg/objstore"
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 

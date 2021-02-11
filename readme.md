@@ -60,7 +60,7 @@ Valid architecture strings:
  
 ## Installation and Config ##
 
- 1. `go get -u github.com/mlabbe/binfetch`
+ 1. `go get -u github.com/mlabbe/binfetch/cmd/binfetch`
 
  2. `aws configure` to specify an AWS profile with S3 Read Access.
 

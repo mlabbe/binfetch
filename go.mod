@@ -1,4 +1,4 @@
-module frogtoss.com/binfetch
+module github.com/mlabbe/binfetch
 
 go 1.15
 
