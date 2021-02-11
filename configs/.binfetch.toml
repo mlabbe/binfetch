@@ -1,0 +1,8 @@
+# Sample toml config file.
+# Copy this to $HOME
+
+# Set the AWS region here
+S3Region="ca-central-1"
+
+# Set the name of the S3 bucket without the s3:// URL prefix
+S3Bucket=""
