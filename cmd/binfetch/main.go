@@ -116,11 +116,29 @@ func main() {
 
 		fmt.Printf("Found compatible archive built at %v\n", time.Unix(newestBuildset.UnixTimestamp, 0))
 
-		archiveKey, err := objstore.S3ListArchiveForBuildset(s3svc, newestBuildset.Key,
-			getHostOSName(), getHostArch(), config.S3Bucket)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "get archive error: %v\n", err)
-			os.Exit(1)
+		// on macos, make two attempts to find an archive, attempting
+		// the universal version first.
+		tryArch := make([]string, 0, 2)
+		if runtime.GOOS == "darwin" {
+			tryArch = append(tryArch, "universal")
+		}
+		tryArch = append(tryArch, getHostArch())
+
+		var archiveKey *string
+		for i, arch := range(tryArch) {
+
+			fmt.Printf("Discovering archive name for %s, %s", getHostOSName(), arch)
+			
+			archiveKey, err = objstore.S3ListArchiveForBuildset(s3svc, newestBuildset.Key,
+				getHostOSName(), arch, config.S3Bucket)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "get archive error: %v\n", err)
+				if i+1 == len(tryArch) {
+					os.Exit(1)
+				}
+				continue
+			}
+			break
 		}
 
 		fileHandle, err := getDstFileHandleFromSrcPath(*archiveKey)
